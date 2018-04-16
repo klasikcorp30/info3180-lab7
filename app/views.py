@@ -36,12 +36,12 @@ def form_errors(form):
 
     return error_messages
 
-@app.route('/api/uploads', methods=['POST'])
+@app.route('/api/upload', methods=['POST'])
 def upload():
     form = UploadForm()
     if request.method == "POST" and form.validate_on_submit():
         f = request.files['photo']
-        description = request.form['description']
+        description = form.description.data
         success = 'File Upload Successful'
         filename = secure_filename(f.filename)
         f.save(os.path.join(app.config['UPLOAD_FOLDER'], filename))
@@ -53,7 +53,7 @@ def upload():
     else:
         return jsonify(
             error = form_errors(form)
-        )
+        ) 
 
 
 ###
@@ -72,7 +72,7 @@ def send_text_file(file_name):
 def add_header(response):
     """
     Add headers to both force latest IE rendering engine or Chrome Frame,
-    and also tell the browser not to cache the rendered page. If we wanted
+    and also telfieldl the browser not to cache the rendered page. If we wanted
     to we could change max-age to 600 seconds which would be 10 minutes.
     """
     response.headers['X-UA-Compatible'] = 'IE=Edge,chrome=1'
